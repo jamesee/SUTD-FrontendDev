@@ -13,7 +13,7 @@ const IconButton = (props) => (
 
 const EditButton = (props) => {
   return (
-    <IconButton title="Edit" onClick={props.onClick} index={props.index}>
+    <IconButton title="Edit" onClick={()=>props.onClick(props.index)}>
       <svg
         className="h-5 w-5 text-gray-400"
         fill="currentColor"

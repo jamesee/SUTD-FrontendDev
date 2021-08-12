@@ -1,6 +1,6 @@
 import * as React from "react";
 import { CareerItem } from "../components/career-item";
-import { useState, useReducer } from "react";
+import { useState, useReducer, useEffect } from "react";
 import { jobs } from "../data/data"
 
 const formReducer = (state, event) => {
@@ -20,11 +20,11 @@ const CareerForm = (props) => {
     // setSubmitting(true);
 
     alert(`
-    title : ${formData.title} \n
-    level : ${formData.level} \n
-    dept  : ${formData.department} \n
-    summary: ${formData.summary} \n
-    headcount : ${formData.headcount}
+      title : ${formData.title} \n
+      level : ${formData.level} \n
+      dept  : ${formData.department} \n
+      summary: ${formData.summary} \n
+      headcount : ${formData.headcount}
     `)
 
     // setTimeout(() => {
@@ -32,23 +32,14 @@ const CareerForm = (props) => {
     // }, 3000)
 
     if (!formData) return;
-    props.addJobs(formData);
+    props.addJob(formData);
   }
 
   const handleChange = event => {
-    // alert(event.target.name)
-    if (event.target.name === "summary") {
-      alert(document.getElementById("summary").innerText)
-      setFormData({
-        name: event.target.name,
-        value: document.getElementById("summary").innerText
-      })
-    } else {
       setFormData({
         name: event.target.name,
         value: event.target.value
       })
-    }
   }
 
 
@@ -181,7 +172,7 @@ const CareerForm = (props) => {
                         rounded-md
                       "
                         // value = {formData.summary}
-                        onchange={handleChange}
+                        onChange={handleChange}
                       />
                     </div>
                   </div>
@@ -276,7 +267,9 @@ const CareerForm = (props) => {
                   focus:ring-2
                   focus:ring-offset-2
                   focus:ring-pink-500
-                ">
+                "
+                id="submit-btn"
+                >
                   ADD
                 </button>
               </div>
@@ -292,17 +285,30 @@ const CareerForm = (props) => {
 
 export const Career = () => {
   const [jobsItems, setjobsItems] = useState(jobs);
+  //isAddEdit = true => Add, otherwise Edit
+  const [isAddEdit, setIsAddEdit] = useState(true);
 
-  const addJobs = (newJobsItem) => {
-    console.log(`[DEBUG] addJobs function ...`)
+  useEffect(() => {
+    document.getElementById("submit-btn").innerText = isAddEdit ? "Add" : "Update";
+  }, [isAddEdit])
+
+  const addJob = (newJobsItem) => {
+    console.log(`[DEBUG] addJob function ...`)
     const newJobs = [...jobsItems, newJobsItem];
     setjobsItems(newJobs);
   };
 
   const updateJob = (index) => {
+    console.log(`[DEBUG] updateJob function ...`)
     alert(`updateJobs index : ${index}`)
+    alert(`
+      updateJobs \n
+      index : ${index} \n
+  `)
+    setIsAddEdit(false);
+    
     // const newJobs = [...jobsItems];
-    // newJobs.splice(index, 1);
+    // newJobs.splice(index, 1, newJobs);
     // setjobsItems(newJobs);
   };
 
@@ -317,9 +323,8 @@ export const Career = () => {
 
   return (
     <main class="bg-gray-50">
-      <CareerForm addJobs={addJobs} />
-      {/* <CareerForm addJobs={addJobs}/> */}
-      {/* <ShowCareerItems /> */}
+      <CareerForm addJob={addJob} />
+      {/* <CareerForm updateJob={updateJob} /> */}
       <div className="max-w-xl mx-auto p-6 space-y-5">
         {jobsItems.map((job, index) => (
           <CareerItem
