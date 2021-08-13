@@ -33,6 +33,7 @@ const CareerForm = (props) => {
 
     if (!formData) return;
     props.addJob(formData);
+    createJob(formData);
   }
 
   const handleChange = event => {
@@ -42,29 +43,39 @@ const CareerForm = (props) => {
       })
   }
 
+  const API_URL = "https://ecomm-service.herokuapp.com/job"
+  const createJob = (data) => {
+    return fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        "Content-Type" : "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+  }
 
   return (
-    <div class="max-w-6xl mx-auto px-3 py-12 space-y-6">
-      <div class="mb-8">
+    <div className="max-w-6xl mx-auto px-3 py-12 space-y-6">
+      <div className="mb-8">
         <div>
-          <h1 class="text-6xl mb-4 font-extrabold">Careers</h1>
+          <h1 className="text-6xl mb-4 font-extrabold">Careers</h1>
         </div>
       </div>
-      <div class="flex flex-col md:flex-row gap-3">
-        <div class="md:w-1/2">
+      <div className="flex flex-col md:flex-row gap-3">
+        <div className="md:w-1/2">
           <form onSubmit={handleSubmit}>
-            <div class="
+            <div className="
               bg-white
               overflow-hidden
               shadow
               rounded-lg
               divide-y divide-gray-200
             ">
-              <div class="px-4 py-5 sm:px-6 text-lg">Add Job Posting</div>
-              <div class="px-4 py-5 sm:p-6">
-                <div class="space-y-5">
-                  <div class="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
-                    <label for="job-title" class="
+              <div className="px-4 py-5 sm:px-6 text-lg">Add Job Posting</div>
+              <div className="px-4 py-5 sm:p-6">
+                <div className="space-y-5">
+                  <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
+                    <label htmlFor="job-title" className="
                       block
                       text-sm
                       font-medium
@@ -73,8 +84,8 @@ const CareerForm = (props) => {
                     ">
                       Job Title
                     </label>
-                    <div class="mt-1 sm:mt-0 sm:col-span-2">
-                      <input type="text" name="title" id="job-title" required="" class="
+                    <div className="mt-1 sm:mt-0 sm:col-span-2">
+                      <input type="text" name="title" id="job-title" required="" className="
                         block
                         w-full
                         shadow-sm
@@ -89,8 +100,8 @@ const CareerForm = (props) => {
                     </div>
                   </div>
 
-                  <div class="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
-                    <label for="job-level" class="
+                  <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
+                    <label htmlFor="job-level" className="
                       block
                       text-sm
                       font-medium
@@ -99,8 +110,8 @@ const CareerForm = (props) => {
                     ">
                       Level
                     </label>
-                    <div class="mt-1 sm:mt-0 sm:col-span-2">
-                      <select id="job-level" name="level" required="" class="
+                    <div className="mt-1 sm:mt-0 sm:col-span-2">
+                      <select id="job-level" name="level" required="" className="
                         block
                         w-full
                         pl-3
@@ -125,8 +136,8 @@ const CareerForm = (props) => {
                     </div>
                   </div>
 
-                  <div class="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
-                    <label for="job-department" class="
+                  <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
+                    <label htmlFor="job-department" className="
                       block
                       text-sm
                       font-medium
@@ -135,8 +146,8 @@ const CareerForm = (props) => {
                     ">
                       Department
                     </label>
-                    <div class="mt-1 sm:mt-0 sm:col-span-2">
-                      <input type="text" name="department" id="job-department" required="" placeholder="e.g. Engineering" class="
+                    <div className="mt-1 sm:mt-0 sm:col-span-2">
+                      <input type="text" name="department" id="job-department" required="" placeholder="e.g. Engineering" className="
                         block
                         w-full
                         shadow-sm
@@ -151,8 +162,8 @@ const CareerForm = (props) => {
                     </div>
                   </div>
 
-                  <div class="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
-                    <label for="job-summary" class="
+                  <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
+                    <label htmlFor="job-summary" className="
                       block
                       text-sm
                       font-medium
@@ -161,8 +172,8 @@ const CareerForm = (props) => {
                     ">
                       Summary
                     </label>
-                    <div class="mt-1 sm:mt-0 sm:col-span-2">
-                      <textarea id="job-summary" name="summary" rows="4" required="" class="
+                    <div className="mt-1 sm:mt-0 sm:col-span-2">
+                      <textarea id="job-summary" name="summary" rows="4" required="" className="
                         block
                         w-full
                         shadow-sm
@@ -177,8 +188,8 @@ const CareerForm = (props) => {
                     </div>
                   </div>
 
-                  <div class="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
-                    <label for="headcount" class="
+                  <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
+                    <label htmlFor="headcount" className="
                       block
                       text-sm
                       font-medium
@@ -187,9 +198,9 @@ const CareerForm = (props) => {
                     ">
                       Headcount
                     </label>
-                    <div class="mt-1 sm:mt-0 sm:col-span-2">
-                      <div class="relative w-32">
-                        <button type="button" class="
+                    <div className="mt-1 sm:mt-0 sm:col-span-2">
+                      <div className="relative w-32">
+                        <button type="button" className="
                           absolute
                           left-0
                           inset-y-0
@@ -206,11 +217,11 @@ const CareerForm = (props) => {
                             }
                           }}
                         >
-                          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4"></path>
                           </svg>
                         </button>
-                        <input type="text" name="headcount" id="headcount" required="" class="
+                        <input type="text" name="headcount" id="headcount" required="" className="
                           block
                           w-full
                           px-9
@@ -222,8 +233,9 @@ const CareerForm = (props) => {
                           rounded-md
                         "
                           value={value}
-                          readonly="" />
-                        <button type="button" class="
+                          onChange={handleChange}
+                          readOnly="" />
+                        <button type="button" className="
                           absolute
                           right-0
                           inset-y-0
@@ -239,18 +251,18 @@ const CareerForm = (props) => {
                             })
                           }}
                         >
-                          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                           </svg>
                         </button>
                       </div>
-                      <div id="headcount-error" class="text-red-500 text-xs pt-1 hidden"></div>
+                      <div id="headcount-error" className="text-red-500 text-xs pt-1 hidden"></div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="px-4 py-4 sm:px-6 text-right">
-                <button class="
+              <div className="px-4 py-4 sm:px-6 text-right">
+                <button className="
                   inline-flex
                   justify-center
                   py-2
@@ -322,7 +334,7 @@ export const Career = () => {
 
 
   return (
-    <main class="bg-gray-50">
+    <main className="bg-gray-50">
       <CareerForm addJob={addJob} />
       {/* <CareerForm updateJob={updateJob} /> */}
       <div className="max-w-xl mx-auto p-6 space-y-5">
