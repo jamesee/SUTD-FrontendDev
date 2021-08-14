@@ -1,57 +1,87 @@
 import * as React from "react";
 import { CareerItem } from "../components/career-item";
-import { useState, useReducer, useEffect } from "react";
+import { useState, useReducer, useEffect, useRef } from "react";
 import { jobs } from "../data/data"
 
-const formReducer = (state, event) => {
-  return {
-    ...state,
-    [event.name]: event.value
+function formReducer (state, action) {
+  switch(action.type){
+    case "setData":
+          return {...action.payloads}
+    case "formEvent":
+          return {
+            ...state,
+            [action.payloads.name]: action.payloads.value
+          }
+    default:
+          return state
   }
+
+}
+
+const API_URL = "https://ecomm-service.herokuapp.com/job"
+const createJob = (data) => {
+  return fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      "Content-Type" : "application/json"
+    },
+    body: JSON.stringify(data)
+  })
 }
 
 const CareerForm = (props) => {
-  const [formData, setFormData] = useReducer(formReducer, {});
+
+  const { addJob,  editJob, toggleEditMode, job, editMode} = props;
+
+  
+  const [formData, setFormData] = useReducer(formReducer, {...job});
+  // const [formData, setFormData] = useReducer(formReducer, {});
   // const [submitting, setSubmitting] = useState(false);
-  const [value, setValue] = React.useState(1);
+  const [value, setValue] = useState(1);
+  
+  const submitBtnRef = useRef();
+
+
+  if (editMode) {
+      // setFormData({type: "setData", payloads: job})
+      alert(`
+        Career Form if statement \n
+        title : ${formData.title} \n
+        level : ${formData.level} \n
+        dept  : ${formData.department} \n
+        summary: ${formData.summary} \n
+        headcount : ${formData.headcount}
+    `)
+  }
+
+
+  useEffect(() => {
+    // document.getElementById("submit-btn").innerText = props.mode ? "Add" : "Update";
+    submitBtnRef.current.innerText = (editMode ? "Update" : "Add" );
+  }, [editMode])
 
   const handleSubmit = event => {
     event.preventDefault();
     // setSubmitting(true);
-
-    alert(`
-      title : ${formData.title} \n
-      level : ${formData.level} \n
-      dept  : ${formData.department} \n
-      summary: ${formData.summary} \n
-      headcount : ${formData.headcount}
-    `)
-
     // setTimeout(() => {
     //   setSubmitting(false);
     // }, 3000)
 
+    toggleEditMode();
+
     if (!formData) return;
-    props.addJob(formData);
-    createJob(formData);
+    editMode? editJob(formData): addJob(formData);
+    // createJob(formData);
   }
 
   const handleChange = event => {
       setFormData({
-        name: event.target.name,
-        value: event.target.value
+        type: "formEvent",
+        payloads: {
+          name: event.target.name,
+          value: event.target.value
+        }
       })
-  }
-
-  const API_URL = "https://ecomm-service.herokuapp.com/job"
-  const createJob = (data) => {
-    return fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        "Content-Type" : "application/json"
-      },
-      body: JSON.stringify(data)
-    })
   }
 
   return (
@@ -281,6 +311,7 @@ const CareerForm = (props) => {
                   focus:ring-pink-500
                 "
                 id="submit-btn"
+                ref={submitBtnRef}
                 >
                   ADD
                 </button>
@@ -294,60 +325,96 @@ const CareerForm = (props) => {
   )
 };
 
+function formJobReducer (state, action){
+  switch(action.type){
+    case 'setData':
+      return {...state, ...action.payloads}
+    default:
+      return action.payloads
+  }
+}
 
 export const Career = () => {
-  const [jobsItems, setjobsItems] = useState(jobs);
-  //isAddEdit = true => Add, otherwise Edit
-  const [isAddEdit, setIsAddEdit] = useState(true);
+  const [jobsItems, setJobsItems] = useState(jobs);
+  const [formJob, setFormJob] = useState([{}])
+  const [editMode, setEditMode] = useState(false);
 
-  useEffect(() => {
-    document.getElementById("submit-btn").innerText = isAddEdit ? "Add" : "Update";
-  }, [isAddEdit])
+  // useEffect((index) => {
+  //   editMode ? setFormJob(jobsItems[index]) : setFormJob({});
+  // }, [editMode])
 
   const addJob = (newJobsItem) => {
     console.log(`[DEBUG] addJob function ...`)
     const newJobs = [...jobsItems, newJobsItem];
-    setjobsItems(newJobs);
+    setJobsItems(newJobs);
   };
 
   const updateJob = (index) => {
-    console.log(`[DEBUG] updateJob function ...`)
-    alert(`updateJobs index : ${index}`)
-    alert(`
-      updateJobs \n
-      index : ${index} \n
-  `)
-    setIsAddEdit(false);
+     console.log(`[DEBUG] updateJob function ...`)
+    //   alert(`updateJobs index : ${index}`)
+    //   alert(`
+    //     updateJobs \n
+    //     id : ${jobs[index]._id} \n
+    // `)
+    setEditMode(true);
+    // setFormJob({type:"setData", payloads:jobsItems[index]})
+    setFormJob([{...jobsItems[index]}])
     
+    alert(`
+        updateJob function \n
+
+        title : ${formJob.title} \n
+        level : ${formJob.level} \n
+        dept  : ${formJob.department} \n
+        summary: ${formJob.summary} \n
+        headcount : ${formJob.headcount}
+    `)
     // const newJobs = [...jobsItems];
     // newJobs.splice(index, 1, newJobs);
     // setjobsItems(newJobs);
   };
 
 
+
+  const toggleEditMode = () =>{
+    setEditMode(!editMode);
+  }
+
+  const editJob = (index) => {
+    alert("editJob function ...")
+    console.log(`[DEBUG] editJob function ...`)
+  
+  }
+
   const removeJob = (index) => {
     // alert(`removeJobs index : ${index}`)
     const newJobs = [...jobsItems];
     newJobs.splice(index, 1);
-    setjobsItems(newJobs);
+    setJobsItems(newJobs);
   };
 
 
   return (
     <main className="bg-gray-50">
-      <CareerForm addJob={addJob} />
+      <CareerForm 
+        addJob={addJob} 
+        editJob={editJob} 
+        toggleEditMode={toggleEditMode}
+        job={formJob} 
+        editMode={editMode}
+      />
       {/* <CareerForm updateJob={updateJob} /> */}
       <div className="max-w-xl mx-auto p-6 space-y-5">
         {jobsItems.map((job, index) => (
-          <CareerItem
-            index={index}
-            title={job.title}
-            department={job.department}
-            level={job.level}
-            onEdit={updateJob}
-            onDelete={removeJob}
-            key={job._id}
-          />
+            <CareerItem
+              index={index}
+              title={job.title}
+              department={job.department}
+              level={job.level}
+              onEdit={updateJob}
+              onDelete={removeJob}
+              key={job._id}
+            />
         ))}
       </div>
     </main>
