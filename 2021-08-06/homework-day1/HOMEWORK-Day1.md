@@ -14,18 +14,13 @@ docker run -d -p 3000:80 james1122/react-hw-day1
 
 # Completed
 
-## CareerForm component (80% done)
+## CareerForm component (completed)
 reference: https://www.digitalocean.com/community/tutorials/how-to-build-forms-in-react
 
 see the following files:
 * src/pages/career.jsx
 * src/components/career-item.jsx
 
+## removeJob function (completed)
 
-### Help needed.
-I have problem in binding the formData.summary (text-area). Somehow the handleChange function is not working on text-area changes.
-
-## removeJob function (done)
-
-## updateJob function (partially done)
-Managed to pass the index of the CareerItems component into the updateJob function. 
+## updateJob function (completed)
