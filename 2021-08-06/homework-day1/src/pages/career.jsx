@@ -3,73 +3,44 @@ import { CareerItem } from "../components/career-item";
 import { useState, useReducer, useEffect, useRef } from "react";
 import { jobs } from "../data/data"
 
-function formReducer (state, action) {
-  switch(action.type){
+function formReducer(state, action) {
+  switch (action.type) {
     case "setData":
-          return {...action.payloads}
+      return { ...action.payloads }
     case "formEvent":
-          return {
-            ...state,
-            [action.payloads.name]: action.payloads.value
-          }
+      return {
+        ...state,
+        [action.payloads.name]: action.payloads.value
+      }
     default:
-          return state
+      return state
   }
 
 }
 
-const API_URL = "https://ecomm-service.herokuapp.com/job"
-const createJob = (data) => {
-  return fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      "Content-Type" : "application/json"
-    },
-    body: JSON.stringify(data)
-  })
-}
+// const createJob = (data) => {
+//   const API_URL = "https://ecomm-service.herokuapp.com/job"
+
+//   return fetch(API_URL, {
+//     method: 'POST',
+//     headers: {
+//       "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify(data)
+//   })
+// }
 
 const CareerForm = (props) => {
 
-  const { addJob,  editJob, toggleEditMode, job, editMode} = props;
-  const [formData, setFormData] = useReducer(formReducer, {...job});
+  const { addJob, updateJob, formData, setFormData, editMode, onCancel } = props;
   // const [formData, setFormData] = useReducer(formReducer, {});
   // const [submitting, setSubmitting] = useState(false);
   const [value, setValue] = useState(1);
-  
+
   const submitBtnRef = useRef();
 
-
-  // if (job){
-  //   setFormData({
-  //     type: "setData",
-  //     payloads: {...job}
-  //   })
-  // }
-
   useEffect(() => {
-      // setFormData({type: "setData", payloads: job})
-      alert(`
-        Career Form  \n
-        title : ${formData.title} \n
-        level : ${formData.level} \n
-        dept  : ${formData.department} \n
-        summary: ${formData.summary} \n
-        headcount : ${formData.headcount}
-    `)
-    // console.log(`
-    //     Career Form if statement \n
-    //     title : ${formData.title} \n
-    //     level : ${formData.level} \n
-    //     dept  : ${formData.department} \n
-    //     summary: ${formData.summary} \n
-    //     headcount : ${formData.headcount}
-    // `)
-  },[formData]);
-
-
-  useEffect(() => {
-    submitBtnRef.current.innerText = (editMode ? "Update" : "Add" );
+    submitBtnRef.current.innerText = (editMode ? "Update" : "Add");
   }, [editMode]);
 
   const handleSubmit = event => {
@@ -79,21 +50,19 @@ const CareerForm = (props) => {
     //   setSubmitting(false);
     // }, 3000)
 
-    toggleEditMode();
-
     if (!formData) return;
-    editMode? editJob(formData): addJob(formData);
+    editMode ? updateJob(formData) : addJob(formData);
     // createJob(formData);
   }
 
   const handleChange = event => {
-      setFormData({
-        type: "formEvent",
-        payloads: {
-          name: event.target.name,
-          value: event.target.value
-        }
-      })
+    setFormData({
+      type: "formEvent",
+      payloads: {
+        name: event.target.name,
+        value: event.target.value
+      }
+    })
   }
 
   return (
@@ -113,7 +82,7 @@ const CareerForm = (props) => {
               rounded-lg
               divide-y divide-gray-200
             ">
-              <div className="px-4 py-5 sm:px-6 text-lg">Add Job Posting</div>
+              <div className="px-4 py-5 sm:px-6 text-lg">{editMode ? "Edit Job Posting" : "Add Job Posting"}</div>
               <div className="px-4 py-5 sm:p-6">
                 <div className="space-y-5">
                   <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
@@ -138,6 +107,7 @@ const CareerForm = (props) => {
                       "
                         value={formData.title || ''}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   </div>
@@ -200,6 +170,7 @@ const CareerForm = (props) => {
                       "
                         value={formData.department || ''}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   </div>
@@ -224,7 +195,7 @@ const CareerForm = (props) => {
                         border border-gray-300
                         rounded-md
                       "
-                        // value = {formData.summary}
+                        value={formData.summary || ""}
                         onChange={handleChange}
                       />
                     </div>
@@ -253,8 +224,11 @@ const CareerForm = (props) => {
                             if (value > 1) {
                               setValue(value - 1)
                               setFormData({
-                                name: "headcount",
-                                value: value - 1
+                                type: "formEvent",
+                                payloads: {
+                                  name: "headcount",
+                                  value: value - 1
+                                }
                               })
                             }
                           }}
@@ -274,7 +248,7 @@ const CareerForm = (props) => {
                           border-gray-300
                           rounded-md
                         "
-                          value={value}
+                          value={formData.headcount || 1}
                           onChange={handleChange}
                           readOnly="" />
                         <button type="button" className="
@@ -288,8 +262,11 @@ const CareerForm = (props) => {
                           onClick={() => {
                             setValue(value + 1)
                             setFormData({
-                              name: "headcount",
-                              value: value + 1
+                              type: "formEvent",
+                              payloads: {
+                                name: "headcount",
+                                value: value + 1
+                              }
                             })
                           }}
                         >
@@ -304,6 +281,31 @@ const CareerForm = (props) => {
                 </div>
               </div>
               <div className="px-4 py-4 sm:px-6 text-right">
+                {editMode &&
+                  <button className="
+                  inline-flex
+                  justify-center
+                  py-2
+                  px-4
+                  border border-transparent
+                  shadow-sm
+                  text-sm
+                  font-medium
+                  rounded-md
+                  text-white
+                  bg-yellow-300
+                  hover:bg-pink-700
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-offset-2
+                  focus:ring-pink-500
+                "
+                    id="cancel-btn"
+                    onClick={onCancel}
+                  >
+                    Cancel
+                  </button>
+                }
                 <button className="
                   inline-flex
                   justify-center
@@ -322,8 +324,8 @@ const CareerForm = (props) => {
                   focus:ring-offset-2
                   focus:ring-pink-500
                 "
-                id="submit-btn"
-                ref={submitBtnRef}
+                  id="submit-btn"
+                  ref={submitBtnRef}
                 >
                   ADD
                 </button>
@@ -337,69 +339,83 @@ const CareerForm = (props) => {
   )
 };
 
-// function formJobReducer (state, action){
-//   switch(action.type){
-//     case 'setData':
-//       return {...state, ...action.payloads}
-//     default:
-//       return action.payloads
-//   }
-// }
-
 export const Career = () => {
+  const [formData, setFormData] = useReducer(formReducer, {});
   const [jobsItems, setJobsItems] = useState(jobs);
-  const [formJob, setFormJob] = useState({})
   const [editMode, setEditMode] = useState(false);
 
-  useEffect((index) => {
-    alert(`
-    *** updateJob function *** \n
-
-    title : ${formJob.title} \n
-    level : ${formJob.level} \n
-    dept  : ${formJob.department} \n
-    summary: ${formJob.summary} \n
-    headcount : ${formJob.headcount}
-`)
-  }, [formJob])
+  //   useEffect((index) => {
+  //     alert(`
+  //     [DEBUG] *** editJob function *** \n
+  //     title : ${formData.title} \n
+  //     level : ${formData.level} \n
+  //     dept  : ${formData.department} \n
+  //     summary: ${formData.summary} \n
+  //     headcount : ${formData.headcount}
+  // `)
+  //   }, [formData])
 
   const addJob = (newJobsItem) => {
+    // id to get from server when submit to API
+    newJobsItem._id = parseInt(Math.random() * 100000000);
     console.log(`[DEBUG] addJob function ...`)
     const newJobs = [...jobsItems, newJobsItem];
     setJobsItems(newJobs);
+    setFormData({
+      type: "setData",
+      payloads: {}
+    });
   };
 
-  const updateJob = (index) => {
-     console.log(`[DEBUG] updateJob function ...`)
-    //   alert(`updateJobs index : ${index}`)
-    //   alert(`
-    //     updateJobs \n
-    //     id : ${jobs[index]._id} \n
-    // `)
+  const editJob = (index) => {
+    console.log(`[DEBUG] editJob function ...`)
     setEditMode(true);
-    // setFormJob({type:"setData", payloads:jobsItems[index]})
-    setFormJob({...jobsItems[index]})
-    
+    setFormData({
+      type: "setData",
+      payloads: jobsItems[index]
+    })
 
-    // const newJobs = [...jobsItems];
-    // newJobs.splice(index, 1, newJobs);
-    // setjobsItems(newJobs);
   };
 
-
-
-  const toggleEditMode = () =>{
+  const toggleEditMode = () => {
     setEditMode(!editMode);
   }
 
-  const editJob = (index) => {
-    alert("editJob function ...")
-    console.log(`[DEBUG] editJob function ...`)
-  
+  const updateJob = (updatedJob) => {
+    console.log(`[DEBUG] updateJob function ...`)
+    // alert(`
+    //   [DEBUG] *** updateJob function *** \n
+    //   id : ${updatedJob._id} \n
+    //   title : ${updatedJob.title} \n
+    //   level : ${updatedJob.level} \n
+    //   dept  : ${updatedJob.department} \n
+    //   summary: ${updatedJob.summary} \n
+    //   headcount : ${updatedJob.headcount}
+    // `)
+
+    toggleEditMode();
+    let newJobsItems = jobsItems.filter(job => job._id !== updatedJob._id)
+    newJobsItems = [...newJobsItems, updatedJob];
+    setJobsItems(newJobsItems)
+    setFormData({
+      type: "setData",
+      payloads: {}
+    });
   }
 
-  const removeJob = (index) => {
-    // alert(`removeJobs index : ${index}`)
+  const onCancel = () => {
+    console.log(`[DEBUG] onCancel function ...`)
+    // alert(`[DEBUG] *** onCancel function *** \n`)
+    toggleEditMode();
+    setFormData({
+      type: "setData",
+      payloads: {}
+    });
+  }
+
+  const deleteJob = (index) => {
+    console.log(`[DEBUG] deleteJob function ...`)
+    // alert(`deleteJobs index : ${index}`)
     const newJobs = [...jobsItems];
     newJobs.splice(index, 1);
     setJobsItems(newJobs);
@@ -408,25 +424,23 @@ export const Career = () => {
 
   return (
     <main className="bg-gray-50">
-      <CareerForm 
-        addJob={addJob} 
-        editJob={editJob} 
-        toggleEditMode={toggleEditMode}
-        job={formJob} 
+      <CareerForm
+        addJob={addJob}
+        updateJob={updateJob}
+        formData={formData}
+        setFormData={setFormData}
         editMode={editMode}
+        onCancel={onCancel}
       />
-      {/* <CareerForm updateJob={updateJob} /> */}
       <div className="max-w-xl mx-auto p-6 space-y-5">
         {jobsItems.map((job, index) => (
-            <CareerItem
-              index={index}
-              title={job.title}
-              department={job.department}
-              level={job.level}
-              onEdit={updateJob}
-              onDelete={removeJob}
-              key={job._id}
-            />
+          <CareerItem
+            index={index}
+            job={job}
+            onEdit={editJob}
+            onDelete={deleteJob}
+            key={job._id}
+          />
         ))}
       </div>
     </main>

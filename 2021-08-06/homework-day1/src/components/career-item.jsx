@@ -13,7 +13,7 @@ const IconButton = (props) => (
 
 const EditButton = (props) => {
   return (
-    <IconButton title="Edit" onClick={()=>props.onClick(props.index)}>
+    <IconButton title="Edit" onClick={()=>props.onClick(props.index)} index={props.index} >
       <svg
         className="h-5 w-5 text-gray-400"
         fill="currentColor"
@@ -77,15 +77,10 @@ const CareerItemTitle = (props) => {
   );
 };
 
-export function CareerItem({
-  index,
-  title,
-  department,
-  level,
-  studentFriendly,
-  onEdit,
-  onDelete,
-}) {
+export function CareerItem(props) {
+
+  const { index, job, onEdit, onDelete } = props;
+  const { title, department, level, studentFriendly} = job;
   return (
     <div className="bg-white shadow overflow-hidden sm:rounded-md">
       <div className="px-4 py-4 flex items-center sm:px-6">
@@ -106,7 +101,7 @@ export function CareerItem({
           </div>
         </div>
         <div className="ml-5 flex-shrink-0 inline-flex items-center justify-center gap-2">
-          <EditButton onClick={onEdit} index={index} />
+          <EditButton onClick={onEdit} index={index}  />
           <DeleteButton onClick={onDelete} index={index} />
         </div>
       </div> 
