@@ -66,37 +66,30 @@ const CareerForm = (props) => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-3 py-12 space-y-6">
-      <div className="mb-8">
-        <div>
-          <h1 className="text-6xl mb-4 font-extrabold">Careers</h1>
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row gap-3">
-        <div className="md:w-1/2">
-          <form onSubmit={handleSubmit}>
-            <div className="
+
+    <form onSubmit={handleSubmit}>
+      <div className="
               bg-white
               overflow-hidden
               shadow
               rounded-lg
               divide-y divide-gray-200
             ">
-              <div className="px-4 py-5 sm:px-6 text-lg">{editMode ? "Edit Job Posting" : "Add Job Posting"}</div>
-              <div className="px-4 py-5 sm:p-6">
-                <div className="space-y-5">
-                  <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
-                    <label htmlFor="job-title" className="
+        <div className="px-4 py-5 sm:px-6 text-lg">{editMode ? "Edit Job Posting" : "Add Job Posting"}</div>
+        <div className="px-4 py-5 sm:p-6">
+          <div className="space-y-5">
+            <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
+              <label htmlFor="job-title" className="
                       block
                       text-sm
                       font-medium
                       text-gray-700
                       sm:mt-px sm:pt-2
                     ">
-                      Job Title
-                    </label>
-                    <div className="mt-1 sm:mt-0 sm:col-span-2">
-                      <input type="text" name="title" id="job-title" required="" className="
+                Job Title
+              </label>
+              <div className="mt-1 sm:mt-0 sm:col-span-2">
+                <input type="text" name="title" id="job-title" className="
                         block
                         w-full
                         shadow-sm
@@ -105,25 +98,25 @@ const CareerForm = (props) => {
                         border-gray-300
                         rounded-md
                       "
-                        value={formData.title || ''}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
+                  value={formData.title || ''}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
 
-                  <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
-                    <label htmlFor="job-level" className="
+            <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
+              <label htmlFor="job-level" className="
                       block
                       text-sm
                       font-medium
                       text-gray-700
                       sm:mt-px sm:pt-2
                     ">
-                      Level
-                    </label>
-                    <div className="mt-1 sm:mt-0 sm:col-span-2">
-                      <select id="job-level" name="level" required="" className="
+                Level
+              </label>
+              <div className="mt-1 sm:mt-0 sm:col-span-2">
+                <select id="job-level" name="level" className="
                         block
                         w-full
                         pl-3
@@ -137,29 +130,29 @@ const CareerForm = (props) => {
                         sm:text-sm
                         rounded-md
                       "
-                        value={formData.level || 'internship'}
-                        onChange={handleChange}
-                      >
-                        <option value="internship">Internship</option>
-                        <option value="entry">Entry</option>
-                        <option value="experienced">Experienced</option>
-                        <option value="manager">Manager</option>
-                      </select>
-                    </div>
-                  </div>
+                  value={formData.level || 'internship'}
+                  onChange={handleChange}
+                >
+                  <option value="internship">Internship</option>
+                  <option value="entry">Entry</option>
+                  <option value="experienced">Experienced</option>
+                  <option value="manager">Manager</option>
+                </select>
+              </div>
+            </div>
 
-                  <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
-                    <label htmlFor="job-department" className="
+            <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
+              <label htmlFor="job-department" className="
                       block
                       text-sm
                       font-medium
                       text-gray-700
                       sm:mt-px sm:pt-2
                     ">
-                      Department
-                    </label>
-                    <div className="mt-1 sm:mt-0 sm:col-span-2">
-                      <input type="text" name="department" id="job-department" required="" placeholder="e.g. Engineering" className="
+                Department
+              </label>
+              <div className="mt-1 sm:mt-0 sm:col-span-2">
+                <input type="text" name="department" id="job-department" placeholder="e.g. Engineering" className="
                         block
                         w-full
                         shadow-sm
@@ -168,25 +161,25 @@ const CareerForm = (props) => {
                         border-gray-300
                         rounded-md
                       "
-                        value={formData.department || ''}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
+                  value={formData.department || ''}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
 
-                  <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
-                    <label htmlFor="job-summary" className="
+            <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
+              <label htmlFor="job-summary" className="
                       block
                       text-sm
                       font-medium
                       text-gray-700
                       sm:mt-px sm:pt-2
                     ">
-                      Summary
-                    </label>
-                    <div className="mt-1 sm:mt-0 sm:col-span-2">
-                      <textarea id="job-summary" name="summary" rows="4" required="" className="
+                Summary
+              </label>
+              <div className="mt-1 sm:mt-0 sm:col-span-2">
+                <textarea id="job-summary" name="summary" rows="4" className="
                         block
                         w-full
                         shadow-sm
@@ -195,49 +188,50 @@ const CareerForm = (props) => {
                         border border-gray-300
                         rounded-md
                       "
-                        value={formData.summary || ""}
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </div>
+                  value={formData.summary || ""}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
 
-                  <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
-                    <label htmlFor="headcount" className="
+            <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
+              <label htmlFor="headcount" className="
                       block
                       text-sm
                       font-medium
                       text-gray-700
                       sm:mt-px sm:pt-2
                     ">
-                      Headcount
-                    </label>
-                    <div className="mt-1 sm:mt-0 sm:col-span-2">
-                      <div className="relative w-32">
-                        <button type="button" className="
+                Headcount
+              </label>
+              <div className="mt-1 sm:mt-0 sm:col-span-2">
+                <div className="relative w-32">
+                  <button type="button" className="
                           absolute
                           left-0
                           inset-y-0
                           px-1.5
                           text-gray-400
                         " id="headcount-minus-btn"
-                          onClick={() => {
-                            if (value > 1) {
-                              setValue(value - 1)
-                              setFormData({
-                                type: "formEvent",
-                                payloads: {
-                                  name: "headcount",
-                                  value: value - 1
-                                }
-                              })
-                            }
-                          }}
-                        >
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4"></path>
-                          </svg>
-                        </button>
-                        <input type="text" name="headcount" id="headcount" required="" className="
+                    onClick={() => {
+                      if (value > 1) {
+                        setValue(value - 1)
+                        setFormData({
+                          type: "formEvent",
+                          payloads: {
+                            name: "headcount",
+                            value: value - 1
+                          }
+                        })
+                      }
+                    }}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4"></path>
+                    </svg>
+                  </button>
+                  <input type="text" name="headcount" id="headcount" className="
                           block
                           w-full
                           px-9
@@ -248,41 +242,41 @@ const CareerForm = (props) => {
                           border-gray-300
                           rounded-md
                         "
-                          value={formData.headcount || 1}
-                          onChange={handleChange}
-                          readOnly="" />
-                        <button type="button" className="
+                    value={formData.headcount || 1}
+                    onChange={handleChange}
+                    readOnly="" />
+                  <button type="button" className="
                           absolute
                           right-0
                           inset-y-0
                           px-1.5
                           text-gray-400
                         " id="headcount-plus-btn"
-                          name="headcount"
-                          onClick={() => {
-                            setValue(value + 1)
-                            setFormData({
-                              type: "formEvent",
-                              payloads: {
-                                name: "headcount",
-                                value: value + 1
-                              }
-                            })
-                          }}
-                        >
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                          </svg>
-                        </button>
-                      </div>
-                      <div id="headcount-error" className="text-red-500 text-xs pt-1 hidden"></div>
-                    </div>
-                  </div>
+                    name="headcount"
+                    onClick={() => {
+                      setValue(value + 1)
+                      setFormData({
+                        type: "formEvent",
+                        payloads: {
+                          name: "headcount",
+                          value: value + 1
+                        }
+                      })
+                    }}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                  </button>
                 </div>
+                <div id="headcount-error" className="text-red-500 text-xs pt-1 hidden"></div>
               </div>
-              <div className="px-4 py-4 sm:px-6 text-right">
-                {editMode &&
-                  <button className="
+            </div>
+          </div>
+        </div>
+        <div className="px-4 py-4 space-x-4 sm:px-6 text-right">
+          {editMode &&
+            <button className="
                   inline-flex
                   justify-center
                   py-2
@@ -293,20 +287,20 @@ const CareerForm = (props) => {
                   font-medium
                   rounded-md
                   text-white
-                  bg-yellow-300
+                  md:bg-gray-500
                   hover:bg-pink-700
                   focus:outline-none
                   focus:ring-2
                   focus:ring-offset-2
                   focus:ring-pink-500
                 "
-                    id="cancel-btn"
-                    onClick={onCancel}
-                  >
-                    Cancel
-                  </button>
-                }
-                <button className="
+              id="cancel-btn"
+              onClick={onCancel}
+            >
+              Cancel
+            </button>
+          }
+          <button className="
                   inline-flex
                   justify-center
                   py-2
@@ -324,17 +318,15 @@ const CareerForm = (props) => {
                   focus:ring-offset-2
                   focus:ring-pink-500
                 "
-                  id="submit-btn"
-                  ref={submitBtnRef}
-                >
-                  ADD
-                </button>
-              </div>
-            </div>
-          </form>
+            id="submit-btn"
+            ref={submitBtnRef}
+          >
+            ADD
+          </button>
         </div>
       </div>
-    </div>
+    </form>
+
 
   )
 };
@@ -423,26 +415,45 @@ export const Career = () => {
 
 
   return (
-    <main className="bg-gray-50">
-      <CareerForm
-        addJob={addJob}
-        updateJob={updateJob}
-        formData={formData}
-        setFormData={setFormData}
-        editMode={editMode}
-        onCancel={onCancel}
-      />
-      <div className="max-w-xl mx-auto p-6 space-y-5">
-        {jobsItems.map((job, index) => (
-          <CareerItem
-            index={index}
-            job={job}
-            onEdit={editJob}
-            onDelete={deleteJob}
-            key={job._id}
-          />
-        ))}
+    <main class="bg-gray-50">
+      <div class="max-w-6xl mx-auto px-3 py-12 space-y-6">
+        <div class="mb-8">
+          <div>
+            <h1 class="text-6xl mb-4 font-extrabold">Careers</h1>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-3">
+          <div class="md:w-1/2">
+          
+            <CareerForm
+              addJob={addJob}
+              updateJob={updateJob}
+              formData={formData}
+              setFormData={setFormData}
+              editMode={editMode}
+              onCancel={onCancel}
+            />
+
+          </div>
+          <ul class="md:flex-1 space-y-3" id="career-list">
+
+
+            {jobsItems.map((job, index) => (
+              <li class="js-career-item">
+                <CareerItem
+                  index={index}
+                  job={job}
+                  onEdit={editJob}
+                  onDelete={deleteJob}
+                  key={job._id}
+                />
+              </li>
+            ))}
+
+          </ul>
+        </div>
       </div>
     </main>
+
   );
 };
