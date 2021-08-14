@@ -32,8 +32,6 @@ const createJob = (data) => {
 const CareerForm = (props) => {
 
   const { addJob,  editJob, toggleEditMode, job, editMode} = props;
-
-  
   const [formData, setFormData] = useReducer(formReducer, {...job});
   // const [formData, setFormData] = useReducer(formReducer, {});
   // const [submitting, setSubmitting] = useState(false);
@@ -42,23 +40,37 @@ const CareerForm = (props) => {
   const submitBtnRef = useRef();
 
 
-  if (editMode) {
+  // if (job){
+  //   setFormData({
+  //     type: "setData",
+  //     payloads: {...job}
+  //   })
+  // }
+
+  useEffect(() => {
       // setFormData({type: "setData", payloads: job})
       alert(`
-        Career Form if statement \n
+        Career Form  \n
         title : ${formData.title} \n
         level : ${formData.level} \n
         dept  : ${formData.department} \n
         summary: ${formData.summary} \n
         headcount : ${formData.headcount}
     `)
-  }
+    // console.log(`
+    //     Career Form if statement \n
+    //     title : ${formData.title} \n
+    //     level : ${formData.level} \n
+    //     dept  : ${formData.department} \n
+    //     summary: ${formData.summary} \n
+    //     headcount : ${formData.headcount}
+    // `)
+  },[formData]);
 
 
   useEffect(() => {
-    // document.getElementById("submit-btn").innerText = props.mode ? "Add" : "Update";
     submitBtnRef.current.innerText = (editMode ? "Update" : "Add" );
-  }, [editMode])
+  }, [editMode]);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -341,7 +353,7 @@ export const Career = () => {
 
   useEffect((index) => {
     alert(`
-    updateJob function \n
+    *** updateJob function *** \n
 
     title : ${formJob.title} \n
     level : ${formJob.level} \n
