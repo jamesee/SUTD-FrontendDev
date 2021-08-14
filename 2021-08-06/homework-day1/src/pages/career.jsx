@@ -336,7 +336,7 @@ function formJobReducer (state, action){
 
 export const Career = () => {
   const [jobsItems, setJobsItems] = useState(jobs);
-  const [formJob, setFormJob] = useState([{}])
+  const [formJob, setFormJob] = useState({})
   const [editMode, setEditMode] = useState(false);
 
   // useEffect((index) => {
@@ -358,7 +358,7 @@ export const Career = () => {
     // `)
     setEditMode(true);
     // setFormJob({type:"setData", payloads:jobsItems[index]})
-    setFormJob([{...jobsItems[index]}])
+    setFormJob({...jobsItems[index]})
     
     alert(`
         updateJob function \n
