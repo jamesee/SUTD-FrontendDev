@@ -2,11 +2,12 @@ import * as React from "react";
 import { useState, useReducer, useEffect } from "react";
 import { ListingItem } from "../components/listing-item";
 import { MarketPlaceForm } from "../components/marketplace-form";
-import { ItemsData } from "../data/listings-data";
+// import { ItemsData } from "../data/listings-data";
 
 const API_URL = "https://ecomm-service.herokuapp.com/marketplace"
-const getListings = (page, signal) =>
-  fetch(`${API_URL}?limit=6&page=${page}`, {
+
+const getListings = (page, signal) => 
+  fetch(`${API_URL}?limit=6&page=${page? page: 1}`, {
     signal,
   }).then((res) => res.json());
 
@@ -19,13 +20,32 @@ const createListing = (data) =>
     },
   }).then((res) => res.json());
 
+const updateListing = (data) =>
+  fetch(`${API_URL}/${data._id}` , {
+    method: "PATCH",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
+
+const deleteListing = (id) =>
+  fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
+
+
+
 function formReducer(state, action) {
   switch (action.type) {
     case "setData":
       return { ...action.payloads }
     case "formEvent":
-      console.log(`[DEBUG] formReducer name: ${action.payloads.name}`)
-      console.log(`[DEBUG] formReducer value: ${action.payloads.value}`)
+      // console.log(`[DEBUG] formReducer name: ${action.payloads.name}`)
+      // console.log(`[DEBUG] formReducer value: ${action.payloads.value}`)
       return {
         ...state,
         [action.payloads.name]: action.payloads.value
@@ -37,10 +57,19 @@ function formReducer(state, action) {
 
 export const Marketplace = () => {
   // todo: api
-  const [formData, setFormData] = useReducer(formReducer, {});
+  const initFormData = {
+    "title": "",
+    "description": "",
+    "price": 0,
+    "condition": "new",
+    "imageUrl": "",
+    "availability": "in-stock",
+    "numOfStock": 1,
+  }
+  const [formData, setFormData] = useReducer(formReducer, initFormData);
   const [editMode, setEditMode] = useState(false);
-  const [listings, setListings] = useState(ItemsData);
-  // const [listings, setListings] = useState(undefined);
+  // const [listings, setListings] = useState(ItemsData);
+  const [listings, setListings] = useState(undefined);
 
   const [page, setPage] = useState(1);
 
@@ -62,14 +91,6 @@ export const Marketplace = () => {
   }, [page]);
 
   useEffect(() => {
-    // alert(`
-    //   [DEBUG] *** useEffect@MarketPlace component *** \n
-    //   id : ${formData._id} \n
-    //   title : ${formData.title} \n
-    //   price : ${formData.price} \n
-    //   description  : ${formData.description} \n
-    //   numOfStock: ${formData.numOfStock} \n
-    // `)
     console.log(`
       [DEBUG] *** useEffect@MarketPlace component *** \n
       id : ${formData._id} \n
@@ -78,8 +99,7 @@ export const Marketplace = () => {
       numOfStock: ${formData.numOfStock} \n
       description  : ${formData.description} \n
       condition  : ${formData.condition} \n
-      availibility  : ${formData.availibility} \n
-      test  : ${formData.test} \n
+      availibility  : ${formData.availability} \n
     `)
 
   }, [formData])
@@ -87,27 +107,31 @@ export const Marketplace = () => {
   const addItem = (newItem) => {
     console.log(`[INFO] addItem function ...`)
 
-    // createListing(newItem)
-    //   .then(() => {
-    //     loadListings();
-    //     setFormData({
-    //       type: "setData",
-    //       payloads: {}
-    //     });
-    // });
+    createListing(newItem)
+      .then(() => {
+        loadListings();
+        setFormData({
+          type: "setData",
+          payloads: initFormData
+        });
+      });
     // // todo:id to get from server when submit to API
-    newItem._id = parseInt(Math.random() * 100000000);
-    const newListings = [...listings, newItem];
-    setListings(newListings);
-    setFormData({
-      type: "setData",
-      payloads: {}
-    });
+    // newItem._id = parseInt(Math.random() * 100000000);
+    // const newListings = [...listings, newItem];
+    // setListings(newListings);
+    // setFormData({
+    //   type: "setData",
+    //   payloads: {}
+    // });
   };
 
   const editItem = (index) => {
     console.log(`[INFO] editItem function ...`)
-    // alert(`[INFO] editItem index : ${index}`)
+    // alert(`
+    // [INFO] editItem \n
+    // index : ${index}\n
+    // _id : ${listings[index]._id}
+    // `)
     setEditMode(true);
     setFormData({
       type: "setData",
@@ -116,33 +140,62 @@ export const Marketplace = () => {
   }
 
   const updateItem = (updatedItem) => {
-    console.log(`
-    [DEBUG] *** updateItem function  *** \n
-    id : ${formData._id} \n
-    title : ${formData.title} \n
-    price : ${formData.price} \n
-    numOfStock: ${formData.numOfStock} \n
-    description  : ${formData.description} \n
-    condition  : ${formData.condition} \n
-    availibility  : ${formData.availibility} \n
-  `)
+    console.log(`[INFO] updateItem function ...`)
+
+  //   console.log(`
+  //   [DEBUG] *** updateItem function  *** \n
+  //   id : ${formData._id} \n
+  //   title : ${formData.title} \n
+  //   price : ${formData.price} \n
+  //   numOfStock: ${formData.numOfStock} \n
+  //   description  : ${formData.description} \n
+  //   condition  : ${formData.condition} \n
+  //   availibility  : ${formData.availability} \n
+  // `)
 
     toggleEditMode();
-    let newListings = listings.filter(job => job._id !== updatedItem._id)
-    newListings = [...newListings, updatedItem];
-    setListings(newListings)
-    setFormData({
-      type: "setData",
-      payloads: {}
-    });
+    updateListing(updatedItem)
+      .then(() => {
+        loadListings();
+        setFormData({
+          type: "setData",
+          payloads: initFormData
+        });
+      });
+
+
+    // toggleEditMode();
+    // let newListings = listings.filter(job => job._id !== updatedItem._id)
+    // newListings = [...newListings, updatedItem];
+    // setListings(newListings)
+    // setFormData({
+    //   type: "setData",
+    //   payloads: {}
+    // });
   }
 
   const deleteItem = (index) => {
     console.log(`[INFO] deleteItem function ...`)
-    // alert(`[INFO] deleteItem index : ${index}`)
-    const newListings = [...listings];
-    newListings.splice(index, 1);
-    setListings(newListings);
+    // alert(`
+    // [INFO] deleteItem \n
+    // index : ${index}\n
+    // _id : ${listings[index]._id}
+    // `)
+
+    const id = listings[index]._id;
+    deleteListing(id)
+      .then(() => {
+        loadListings();
+        setFormData({
+          type: "setData",
+          payloads: initFormData
+        });
+      });
+      
+
+    // const newListings = [...listings];
+    // newListings.splice(index, 1);
+    // setListings(newListings);
 
   }
 

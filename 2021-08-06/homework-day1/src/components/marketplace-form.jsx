@@ -7,7 +7,7 @@ export const MarketPlaceForm = (props) => {
   const { addItem, updateItem, formData, setFormData, editMode, onCancel } = props;
 
   const submitBtnRef = useRef();
-  // const titleInputRef = useRef();
+  const titleInputRef = useRef();
 
   useEffect(() => {
     submitBtnRef.current.innerText = (editMode ? "Update" : "Add");
@@ -19,15 +19,15 @@ export const MarketPlaceForm = (props) => {
     if (!formData) return;
     editMode ? updateItem(formData) : addItem(formData);
 
-    // if (titleInputRef.current) {
-    //     titleInputRef.current.focus();
-    // }
+    if (titleInputRef.current) {
+        titleInputRef.current.focus();
+    }
   }
 
   const handleChange = event => {
     const numberFields = ['price', 'numOfStock']
-      console.log(`[DEBUG] handleChange name: ${event.target.name}`)
-      console.log(`[DEBUG] handleChange value: ${event.target.value}`)
+      // console.log(`[DEBUG] handleChange name: ${event.target.name}`)
+      // console.log(`[DEBUG] handleChange value: ${event.target.value}`)
 
     if (numberFields.includes(event.target.name)) {
       setFormData({
@@ -87,7 +87,7 @@ export const MarketPlaceForm = (props) => {
                         "
                   value={formData.title || ''}
                   onChange={handleChange}
-                // ref={titleInputRef}
+                ref={titleInputRef}
                 />
               </div>
             </div>
@@ -168,8 +168,6 @@ export const MarketPlaceForm = (props) => {
                 Availability
               </label>
               <div className="mt-1">
-              {/* <select id="listing-availability" name="test" required className=" */}
-
               <select id="listing-availability" name="availability" required className="
                             block
                             w-full
@@ -184,7 +182,6 @@ export const MarketPlaceForm = (props) => {
                             sm:text-sm
                             rounded-md
                           "
-                  // value={formData.test || "in-stock"}
                   value={formData.availability || "in-stock"}
                   onChange={handleChange}
                 >
