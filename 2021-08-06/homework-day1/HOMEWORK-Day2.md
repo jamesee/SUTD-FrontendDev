@@ -22,6 +22,7 @@ see the following files:
 * src/components/marketplace-form.jsx
 * src/components/listing-item.jsx (modified slightly doit-17's listing-item.jsx)
 
+## Completed the following functions to interface with api
 * editItem function (completed)
 * updateItem function (completed)
-* updateItem function (completed)
+* DeleteItem function (completed)
