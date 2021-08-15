@@ -25,4 +25,4 @@ see the following files:
 ## Completed the following functions to interface with api
 * editItem function (completed)
 * updateItem function (completed)
-* DeleteItem function (completed)
+* deleteItem function (completed)
