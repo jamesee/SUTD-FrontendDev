@@ -75,9 +75,7 @@ export const Career = () => {
   }
 
   const updateJob = (updatedJob) => {
-    console.log(`[INFO] updateJob function ...`)
-    alert(`[INFO] updateJob function ...`)
-
+    console.log(`[DEBUG] updateJob function ...`)
     // alert(`
     //   [DEBUG] *** updateJob function *** \n
     //   id : ${updatedJob._id} \n
